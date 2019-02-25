@@ -1,5 +1,6 @@
 - color palette (16 colors)
-    - color palette in ioRam
+    - color palette in ioRam (should be 2 per word)
+        - right now is 1 color per word.  Takes up 16 words.  Sould be 8 words.
     - ioRam screen cells fg & bg index into color palette
 - Read ROM (program/data) from file
 - ICpu interface should include setProgramCounter
@@ -8,3 +9,5 @@
 - character mapping for non-printable ASCII chars
     - low 0-32: block drawing chars
     - high 128-255: box drawing chars
+- loop timing
+    - setTimout delay the diff of 100 ms - elapsed time
