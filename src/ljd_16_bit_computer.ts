@@ -1,4 +1,4 @@
-import { keyCodes, makeTermGrid } from 'term-grid-ui'
+import { colors, keyCodes, makeTermGrid } from 'term-grid-ui'
 import { makeDebugCpu } from '/home/ljd/fun/16-bit-cpu-ts'
 
 const tg = makeTermGrid(15, 32)
@@ -27,7 +27,17 @@ function* range(end: number) {
   }
 }
 
+const getScreenCell = (row: number, column: number): number =>
+  ioRamPtr[512 + row * 32 + column]
+
 const draw = () => {
+  for (let row of range(15)) {
+    for (let column of range(32)) {
+      const word = getScreenCell(row, column)
+      const c = String.fromCharCode(word & 0xFF)
+      tg.set(row, column, c, colors.black, colors.white)
+    }
+  }
   tg.draw()
 }
 

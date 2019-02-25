@@ -11,6 +11,7 @@
     "tlint": "tslint --fix -c tslint.json '*.ts' 'src/**/*.ts' 'test/**/*.ts'",
     "lint": "npm run tlint && npm run fmt && npm run fmtjs",
     "tsc": "tsc",
+    "start": "ts-node src/ljd_16_bit_computer.ts",
     "doc": "typedoc --excludePrivate --excludeNotExported --out docs/ src && touch docs/.nojekyll",
     "all": "npm run lint && tsc && npm test"
   },
