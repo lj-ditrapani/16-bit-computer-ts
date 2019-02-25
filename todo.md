@@ -1,0 +1,7 @@
+- color palette (16 colors)
+    - color palette in ioRam
+    - ioRam screen cells fg & bg index into color palette
+- Read ROM (program/data) from file
+- ICpu interface should include setProgramCounter
+- Cpu could clear gamepad itself (at end of frame, before returning)
+- cpu could have makeCpuTypedArray that takes uint16arrays
