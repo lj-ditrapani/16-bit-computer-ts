@@ -1,0 +1,58 @@
+{
+  "name": "ljd-16-bit-computer",
+  "version": "0.0.1",
+  "description": "LJD 16-bit computer in typescript for node",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc -e .ts mocha -r ts-node/register \"test/**/*_test.ts\"",
+    "test1": "mocha -r ts-node/register",
+    "fmt": "prettier --parser typescript --write \"*.ts\" \"src/**/*.ts\" \"test/**/*.ts\"",
+    "fmtjs": "prettier --write \"src/**/*.js\" \"test/**/*.js\" \"src/**/*.json\" \"test/**/*.json\" \"*.json\"",
+    "tlint": "tslint --fix -c tslint.json '*.ts' 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "npm run tlint && npm run fmt && npm run fmtjs",
+    "tsc": "tsc",
+    "doc": "typedoc --excludePrivate --excludeNotExported --out docs/ src && touch docs/.nojekyll",
+    "all": "npm run lint && tsc && npm test"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "statements": 100,
+    "branches": 100,
+    "functions": 100,
+    "lines": 100,
+    "require": [
+      "ts-node/register"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "test/**"
+    ]
+  },
+  "keywords": [
+    "cpu",
+    "16-bit",
+    "emulator"
+  ],
+  "author": "Jonathan Di Trapani",
+  "license": "ISC",
+  "repository": "https://github.com/lj-ditrapani/16-bit-comptuer-ts",
+  "dependencies": {
+    "@types/node": "^11.9.5",
+    "ljd-16-bit-cpu": "^0.3.3",
+    "term-grid-ui": "^0.5.3",
+    "ts-node": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.6",
+    "@types/sinon": "^7.0.6",
+    "mocha": "^6.0.1",
+    "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
+    "source-map-support": "^0.5.10",
+    "tslint": "^5.13.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.3.3333"
+  }
+}
