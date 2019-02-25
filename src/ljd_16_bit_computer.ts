@@ -1,4 +1,4 @@
-import { colors, keyCodes, makeTermGrid } from 'term-grid-ui'
+import { keyCodes, makeTermGrid } from 'term-grid-ui'
 import { makeDebugCpu } from '/home/ljd/fun/16-bit-cpu-ts'
 
 const tg = makeTermGrid(15, 32)
@@ -12,15 +12,25 @@ const programRom = [
   0x241a, // $F841 -> RA
   0x2041, // $0004 -> R1 (dark green)
   0x4a10, // STR $0004 -> mem[$F841]
+  0x24Fa, // $F84F -> RA (end of color ram)
+  0x2301, // $0030 -> R1 (red)
+  0x4a10, // STR $0030 -> mem[$F84F]
   0x100a, // HBY 0x00 RA
   0x200a, // LBY 0x00 RA
   0x3a01, // LOD RA R1
   0x201a, // LBY 0x01 RA
   0x3a02, // LOD RA R2
   0x5123, // ADD R1 R2 R3
-  0x1faa, // HBY 0xFA RA
-  0x200a, // LBY 0x00 RA
-  0x4a30, // STR RA R3
+  0x1013, // set fg & bg color indexes
+  0x1faa, // HBY $FA00 -> RA (screen ram)
+  0x200a, // LBY
+  0x4a30, // STR $0164 -> mem[$FBDF]
+  0x1fba, // HBY $FBDF -> RA (screen ram)
+  0x2dfa, //
+  0x4a30, // STR $0164 -> mem[$FBDF]
+  0x2c0a, // LBY $FBC0 -> RA (screen ram)
+  0x1F23, // set fg & bg color indexes
+  0x4a30, // STR $0164 -> mem[$FBDF]
   0x0000 // END
 ]
 
@@ -35,17 +45,26 @@ function* range(end: number) {
   }
 }
 
-const getScreenCell = (row: number, column: number): number =>
-  ioRam[512 + row * 32 + column]
+const getScreenCell = (row: number, column: number): number => {
+  // console.log(row * 32 + column)
+  return ioRam[512 + row * 32 + column]
+}
 
 const draw = () => {
   for (let row of range(15)) {
     for (let column of range(32)) {
       const word = getScreenCell(row, column)
-      const c = String.fromCharCode(word & 0xFF)
-      tg.set(row, column, c, colors.black, colors.white)
+      const lowByte = word & 0xFF
+      const c = lowByte === 0 ? '\u2580' : String.fromCharCode(lowByte)
+      const fgIndex = word >> 12
+      const bgIndex = (word >> 8) & 0xF
+      const fgColor = ioRam[0x40 + fgIndex]
+      const bgColor = ioRam[0x40 + bgIndex]
+      // console.log(`${row} ${column} ${word} ${c} ${fgIndex} ${bgIndex} ${fgColor} ${bgColor}`)
+      tg.set(row, column, c, fgColor, bgColor)
     }
   }
+  // process.exit(1)
   tg.draw()
 }
 

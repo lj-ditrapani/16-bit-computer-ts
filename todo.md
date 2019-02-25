@@ -5,3 +5,6 @@
 - ICpu interface should include setProgramCounter
 - Cpu could clear gamepad itself (at end of frame, before returning)
 - cpu could have makeCpuTypedArray that takes uint16arrays
+- character mapping for non-printable ASCII chars
+    - low 0-32: block drawing chars
+    - high 128-255: box drawing chars
