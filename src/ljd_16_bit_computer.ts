@@ -6,26 +6,28 @@ const tg = makeTermGrid(15, 32)
 const programRom = [
   0x1f8a, // $F840 -> RA (color ram)
   0x240a, //
-  0x1001, // $000A -> R1 (medium cyan)
-  0x20a1,
-  0x4a10, // STR $000A -> mem[$F840]
+  0x10a1, // $0a04 -> R1 (medium cyan / dark green)
+  0x2041,
+  0x4a10, // STR $0A04 -> mem[$F840]
   0x241a, // $F841 -> RA
-  0x2041, // $0004 -> R1 (dark green)
-  0x4a10, // STR $0004 -> mem[$F841]
-  0x24fa, // $F84F -> RA (end of color ram)
-  0x2301, // $0030 -> R1 (red)
-  0x4a10, // STR $0030 -> mem[$F84F]
+  0x1031, // $032B -> R1 (blue / light blue)
+  0x22b1, //
+  0x4a10, // STR $032B -> mem[$F841]
+  0x247a, // $F847 -> RA (end of color ram)
+  0x1001, // $0030 -> R1 (black / red)
+  0x2301, //
+  0x4a10, // STR $0030 -> mem[$F847]
   0x100a, // HBY 0x00 RA
   0x200a, // LBY 0x00 RA
   0x3a01, // LOD RA R1
   0x201a, // LBY 0x01 RA
   0x3a02, // LOD RA R2
   0x5123, // ADD R1 R2 R3
-  0x1013, // set fg & bg color indexes
+  0x1013, // set fg & bg color indexes (medium cyan / dark green)
   0x1faa, // HBY $FA00 -> RA (screen ram)
   0x200a, // LBY
   0x4a30, // STR $0164 -> mem[$FA00]
-  0x1211, // HBY $2100 -> R1
+  0x1211, // HBY $2300 -> R1 (blue / dark green)
   0x2001,
   0x202a, // LBY
   0x4a10, // STR $2100 -> mem[$FA02]
@@ -33,7 +35,7 @@ const programRom = [
   0x2dfa, //
   0x4a30, // STR $0164 -> mem[$FBDF]
   0x2c0a, // LBY $FBC0 -> RA (screen ram)
-  0x1f23, // set fg & bg color indexes
+  0x1fe3, // set fg & bg color indexes
   0x4a30, // STR $0164 -> mem[$FBDF]
   0x0000 // END
 ]
@@ -62,16 +64,22 @@ const getChar = (code: number): number => {
   }
 }
 
+const getColor = (nibble: number): number => {
+  const index = nibble >> 1
+  const offset = nibble & 0x1
+  const colorPair = ioRam[0x40 + index]
+  return [colorPair >> 8, colorPair & 0xff][offset]
+}
+
 const draw = () => {
   for (const row of range(15)) {
     for (const column of range(32)) {
       const word = getScreenCell(row, column)
       const lowByte = word & 0xff
       const c = String.fromCharCode(getChar(lowByte))
-      const fgIndex = word >> 12
-      const bgIndex = (word >> 8) & 0xf
-      const fgColor = ioRam[0x40 + fgIndex]
-      const bgColor = ioRam[0x40 + bgIndex]
+      const byte = word >> 8
+      const fgColor = getColor(byte >> 4)
+      const bgColor = getColor(byte & 0xf)
       // console.log(`${row} ${column} ${word} ${c} ${fgIndex} ${bgIndex} ${fgColor} ${bgColor}`)
       tg.set(row, column, c, fgColor, bgColor)
     }
