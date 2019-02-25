@@ -24,7 +24,11 @@ const programRom = [
   0x1013, // set fg & bg color indexes
   0x1faa, // HBY $FA00 -> RA (screen ram)
   0x200a, // LBY
-  0x4a30, // STR $0164 -> mem[$FBDF]
+  0x4a30, // STR $0164 -> mem[$FA00]
+  0x1211, // HBY $2100 -> R1
+  0x2001,
+  0x202a, // LBY
+  0x4a10, // STR $2100 -> mem[$FA02]
   0x1fba, // HBY $FBDF -> RA (screen ram)
   0x2dfa, //
   0x4a30, // STR $0164 -> mem[$FBDF]
@@ -45,10 +49,8 @@ function* range(end: number) {
   }
 }
 
-const getScreenCell = (row: number, column: number): number => {
-  // console.log(row * 32 + column)
-  return ioRam[512 + row * 32 + column]
-}
+const getScreenCell = (row: number, column: number): number =>
+  ioRam[512 + row * 32 + column]
 
 const getChar = (code: number): number => {
   if (code < 0x20) {
