@@ -2,7 +2,12 @@ import * as fs from 'fs'
 import { keyCodes, makeTermGrid } from 'term-grid-ui'
 import { Cpu } from '/home/ljd/fun/16-bit-cpu-ts'
 
-const file = fs.readFileSync('test.bin')
+if (process.argv.length !== 3) {
+  console.error('You must provide the path of the ROM file as a command line argument')
+  process.exit(1)
+}
+
+const file = fs.readFileSync(process.argv[2])
 
 const programRom = new Uint16Array(64 * 1024)
 const dataRom = new Uint16Array(32 * 1024)

@@ -1,5 +1,3 @@
-- Read binary ROM file from command line arg
-    - currently hard coded to test.bin
 - loop timing
     - setTimout delay the diff of 100 ms - elapsed time
 - write test program that uses gamepad input
@@ -16,3 +14,5 @@ ICpu interface:
 - readme
 - documentation
 - usage example
+
+- require ROM length to be exact
