@@ -21,7 +21,7 @@ for (let dataIndex = 0; dataIndex < 32 * 1024; dataIndex++) {
   dataRom[dataIndex] = (file[fileIndex++] << 8) | file[fileIndex++]
 }
 
-const tg = makeTermGrid(15, 32)
+const tg = makeTermGrid(17, 32)
 
 const ioRam1: Uint16Array = new Uint16Array(1 * 1024)
 const ioRam2: Uint16Array = new Uint16Array(1 * 1024)
@@ -68,14 +68,22 @@ const draw = () => {
     }
   }
   // process.exit(1)
-  tg.draw()
 }
 
 const runFrame = () => {
+  const start = process.hrtime()
   ioRam = cpu.run(1000)
   ioRam[0x0010] = 0 // clear gamepad input register
   draw()
-  setTimeout(runFrame, 100)
+  const end = process.hrtime(start)
+  const elapsed = end[0] * 1000 + end[1] / 1e6
+  tg.text(15, 0, ''.padEnd(32, ' '), 0, 0)
+  tg.text(16, 0, elapsed.toString().padEnd(32, ' '), 0x2F, 0)
+  tg.draw()
+  const end2 = process.hrtime(start)
+  const elapsed2 = end2[0] * 1000 + end2[1] / 1e6
+  const remaining = 100 - elapsed2
+  setTimeout(runFrame, remaining > 0 ? remaining : 1)
 }
 
 setTimeout(runFrame, 100)

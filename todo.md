@@ -1,5 +1,3 @@
-- loop timing
-    - setTimout delay the diff of 100 ms - elapsed time
 - write test program that uses gamepad input
     - should setup on first frame, then switch FIV to main loop
 
