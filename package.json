@@ -37,7 +37,7 @@
   ],
   "author": "Jonathan Di Trapani",
   "license": "ISC",
-  "repository": "https://github.com/lj-ditrapani/16-bit-comptuer-ts",
+  "repository": "https://github.com/lj-ditrapani/16-bit-computer-ts",
   "dependencies": {
     "@types/node": "^11.9.5",
     "ljd-16-bit-cpu": "^0.3.3",
