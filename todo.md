@@ -11,3 +11,8 @@ ICpu interface:
 - ICpu interface should include setProgramCounter
 - Cpu must clear gamepad itself (at end of frame, before returning)
 - cpu must have makeCpuTypedArray that takes uint16arrays
+
+
+- readme
+- documentation
+- usage example
