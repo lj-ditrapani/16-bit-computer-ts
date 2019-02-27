@@ -1,4 +1,3 @@
-- update original test program; don't need to set color ram anymore
 - write test program that uses gamepad input
     - should setup on first frame, then switch FIV to main loop
 

@@ -1,19 +1,6 @@
 const fs = require('fs')
 
 const programRom = [
-  0x1f8a, // $F840 -> RA (color ram)
-  0x240a, //
-  0x10a1, // $0a04 -> R1 (medium cyan / dark green)
-  0x2041,
-  0x4a10, // STR $0A04 -> mem[$F840]
-  0x241a, // $F841 -> RA
-  0x1031, // $032B -> R1 (blue / light blue)
-  0x22b1, //
-  0x4a10, // STR $032B -> mem[$F841]
-  0x247a, // $F847 -> RA (end of color ram)
-  0x1001, // $0030 -> R1 (black / red)
-  0x2301, //
-  0x4a10, // STR $0030 -> mem[$F847]
   0x100a, // HBY 0x00 RA
   0x200a, // LBY 0x00 RA
   0x3a01, // LOD RA R1
