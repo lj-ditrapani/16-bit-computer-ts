@@ -41,7 +41,29 @@ const bytes =
   programRom
     .map(word => [word >> 8, word & 0xFF])
     .reduce((acc, pair) => acc.concat(pair))
-const buffer = Buffer.alloc((64 + 32) * 2 * 1024)
+const programLength = 64 * 2 * 1024
+const dataLength = 32 * 2 * 1024
+const programAndDataLength = programLength + dataLength
+const buffer = Buffer.alloc(programAndDataLength + 16)
 Buffer.from(bytes).copy(buffer)
-Buffer.from([0, 27, 0, 73]).copy(buffer, 64 * 2 * 1024)
+Buffer.from([0, 27, 0, 73]).copy(buffer, programLength)
+const colors = [
+  0x0a, // 0 medium cyan
+  0x04, // 1 dark green
+  0x03, // 2 blue
+  0x2b, // 3 light blue
+  0x00, // 4
+  0x00, // 5
+  0x00, // 6
+  0x00, // 7
+  0x00, // 8
+  0x00, // 9
+  0x00, // A
+  0x00, // B
+  0x00, // C
+  0x00, // D
+  0x00, // E
+  0x30 // F light blue
+]
+Buffer.from(colors).copy(buffer, programAndDataLength)
 fs.writeFileSync('test.bin', buffer)

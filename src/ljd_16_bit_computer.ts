@@ -1,3 +1,4 @@
+import { strict as assert } from 'assert'
 import * as fs from 'fs'
 import { keyCodes, makeTermGrid } from 'term-grid-ui'
 import { Cpu } from '/home/ljd/fun/16-bit-cpu-ts'
@@ -9,8 +10,12 @@ if (process.argv.length !== 3) {
 
 const file = fs.readFileSync(process.argv[2])
 
+const fileLength = (64 + 32) * 2 * 1024 + 16
+assert.equal(file.length, fileLength, `ROM file must be exactly ${fileLength} bytes.`)
+
 const programRom = new Uint16Array(64 * 1024)
 const dataRom = new Uint16Array(32 * 1024)
+const colors = new Uint8Array(16)
 
 let fileIndex = 0
 for (let programIndex = 0; programIndex < 64 * 1024; programIndex++) {
@@ -19,6 +24,9 @@ for (let programIndex = 0; programIndex < 64 * 1024; programIndex++) {
 
 for (let dataIndex = 0; dataIndex < 32 * 1024; dataIndex++) {
   dataRom[dataIndex] = (file[fileIndex++] << 8) | file[fileIndex++]
+}
+for (let colorIndex = 0; colorIndex < 16; colorIndex++) {
+  colors[colorIndex] = file[fileIndex + colorIndex]
 }
 
 const tg = makeTermGrid(17, 32)
@@ -47,13 +55,6 @@ const getChar = (code: number): number => {
   }
 }
 
-const getColor = (nibble: number): number => {
-  const index = nibble >> 1
-  const offset = nibble & 0x1
-  const colorPair = ioRam[0x40 + index]
-  return [colorPair >> 8, colorPair & 0xff][offset]
-}
-
 const draw = () => {
   for (const row of range(15)) {
     for (const column of range(32)) {
@@ -61,8 +62,8 @@ const draw = () => {
       const lowByte = word & 0xff
       const c = String.fromCharCode(getChar(lowByte))
       const byte = word >> 8
-      const fgColor = getColor(byte >> 4)
-      const bgColor = getColor(byte & 0xf)
+      const fgColor = colors[byte >> 4]
+      const bgColor = colors[byte & 0xf]
       // console.log(`${row} ${column} ${word} ${c} ${fgIndex} ${bgIndex} ${fgColor} ${bgColor}`)
       tg.set(row, column, c, fgColor, bgColor)
     }
