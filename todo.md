@@ -1,3 +1,7 @@
+- Add an 16 byte VideoRom to end of cartridge
+    - Contains 16 colors
+    - No more color ram
+    - No more copying colors to ram
 - write test program that uses gamepad input
     - should setup on first frame, then switch FIV to main loop
 
