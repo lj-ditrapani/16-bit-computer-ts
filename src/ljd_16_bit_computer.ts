@@ -73,7 +73,7 @@ const draw = () => {
 
 const runFrame = () => {
   const start = process.hrtime()
-  ioRam = cpu.run(1000)
+  ioRam = cpu.run(400000)
   ioRam[0x0010] = 0 // clear gamepad input register
   draw()
   const end = process.hrtime(start)
