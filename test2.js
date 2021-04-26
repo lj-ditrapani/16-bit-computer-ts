@@ -40,7 +40,7 @@ const programRom = [
   0x210b, // 08 LBY
   0x100c, // 09 HBY $0010 -> RC (FIV main loop)
   0x210c, // 0A LBY
-  0x1F8d, // 0B HBY $F800 -> RD (FIV IO RAM address)
+  0x1f8d, // 0B HBY $F800 -> RD (FIV IO RAM address)
   0x200d, // 0C
   0x100f, // 0D HBY $0013 -> RF (screen loop)
   0x215f, // 0E
@@ -54,14 +54,13 @@ const programRom = [
   0x4e20, // 15 STR R2 -> screen ram
   0x7e1e, // inc screen ram location
   0x8515, // --R5 (screen loop counter)
-  0xE5F5, // Repeat loop if R5 != 0
-  0x0000 // END
+  0xe5f5, // Repeat loop if R5 != 0
+  0x0000, // END
 ]
 
-const bytes =
-  programRom
-    .map(word => [word >> 8, word & 0xFF])
-    .reduce((acc, pair) => acc.concat(pair))
+const bytes = programRom
+  .map((word) => [word >> 8, word & 0xff])
+  .reduce((acc, pair) => acc.concat(pair))
 const programLength = 64 * 2 * 1024
 const dataLength = 32 * 2 * 1024
 const programAndDataLength = programLength + dataLength
@@ -72,12 +71,12 @@ Buffer.from(dataBytes).copy(buffer, programLength)
 const colors = [
   0x00, // 0 black
   0x0a, // 1 medium cyan
-  0x2A, // 2 light grey
+  0x2a, // 2 light grey
   0x01, // 3 dark blue
   0x04, // 4 dark green
-  0x2F, // 5 light cyan
+  0x2f, // 5 light cyan
   0x30, // 6 red (A)
-  0x0C, // 7 green (S)
+  0x0c, // 7 green (S)
   0x03, // 8 blue (D)
   0x33, // 9 magenta (F)
   0x00, // A
@@ -85,7 +84,7 @@ const colors = [
   0x00, // C
   0x00, // D
   0x00, // E
-  0x3F // F white
+  0x3f, // F white
 ]
 Buffer.from(colors).copy(buffer, programAndDataLength)
 fs.writeFileSync('test2.bin', buffer)

@@ -21,13 +21,12 @@ const programRom = [
   0x2c0a, // LBY $FBC0 -> RA (screen ram)
   0x1fe3, // set fg & bg color indexes
   0x4a30, // STR $0164 -> mem[$FBDF]
-  0x0000 // END
+  0x0000, // END
 ]
 
-const bytes =
-  programRom
-    .map(word => [word >> 8, word & 0xFF])
-    .reduce((acc, pair) => acc.concat(pair))
+const bytes = programRom
+  .map((word) => [word >> 8, word & 0xff])
+  .reduce((acc, pair) => acc.concat(pair))
 const programLength = 64 * 2 * 1024
 const dataLength = 32 * 2 * 1024
 const programAndDataLength = programLength + dataLength
@@ -50,7 +49,7 @@ const colors = [
   0x00, // C
   0x00, // D
   0x00, // E
-  0x30 // F light blue
+  0x30, // F light blue
 ]
 Buffer.from(colors).copy(buffer, programAndDataLength)
 fs.writeFileSync('test.bin', buffer)

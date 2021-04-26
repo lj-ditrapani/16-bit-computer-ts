@@ -1,7 +1,7 @@
-import { strict as assert } from 'assert'
 import * as fs from 'fs'
 import { keyCodes, makeTermGrid } from 'term-grid-ui'
 import { Cpu } from '/home/ljd/fun/16-bit-cpu-ts'
+import { strict as assert } from 'assert'
 
 if (process.argv.length !== 3) {
   console.error('You must provide the path of the ROM file as a command line argument')
@@ -121,7 +121,7 @@ const getButtonBits = (data: string): number => {
 
 tg.clear()
 tg.draw()
-tg.onInput(data => {
+tg.onInput((data) => {
   // set gamepad input register
   ioRam[0x0010] = getButtonBits(data)
 })
