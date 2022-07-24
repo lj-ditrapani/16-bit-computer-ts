@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import { keyCodes, makeTermGrid } from 'term-grid-ui'
-import { Cpu } from '/home/ljd/fun/16-bit-cpu-ts'
+import { Cpu } from 'ljd-16-bit-cpu'
 import { strict as assert } from 'assert'
 
 if (process.argv.length !== 3) {
