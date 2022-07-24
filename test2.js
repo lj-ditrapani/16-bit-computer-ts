@@ -46,16 +46,16 @@ const programRom = [
   0x215f, // 0E
   0x4dc0, // 0F str main loop to FIV; RC -> mem[$F800]
   // Main Loop
-  0x7a0e, // 10 start of screen ram -> RE (mutates)
-  0x7405, // 11 draw counter = 480
-  0x3b01, // 12 gamepad -> R1
-  0x1012, // 13 screen ram cell R2
-  0x2412, // 14
+  0x7a0e, // 10 ADI start of screen ram -> RE (mutates)
+  0x7405, // 11 ADI draw counter = 480
+  0x3b01, // 12 LOD gamepad -> R1
+  0x1012, // 13 HBY screen ram cell R2
+  0x2412, // 14 LBY
   0x4e20, // 15 STR R2 -> screen ram
-  0x7e1e, // inc screen ram location
-  0x8515, // --R5 (screen loop counter)
-  0xe5f5, // Repeat loop if R5 != 0
-  0x0000, // END
+  0x7e1e, // 16 ADI inc screen ram location
+  0x8515, // 17 SBI --R5 (screen loop counter)
+  0xe5f5, // 18 BRV Repeat loop if R5 != 0
+  0x0000, // 19 END
 ]
 
 const bytes = programRom
